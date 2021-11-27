@@ -24,6 +24,7 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
   implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+  implementation("de.svenkubiak:jBCrypt:0.4.1")
   developmentOnly("org.springframework.boot:spring-boot-devtools:true")
   implementation("dev.miku:r2dbc-mysql")
   runtimeOnly("mysql:mysql-connector-java")

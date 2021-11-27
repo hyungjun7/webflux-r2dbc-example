@@ -1,11 +1,12 @@
 package info.hyungjun.blogbackend.models.user
 
 import info.hyungjun.blogbackend.common.DuplicateException
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
-import org.springframework.beans.factory.annotation.Autowired
+import org.mindrot.jbcrypt.BCrypt
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.util.*
+import java.time.LocalDateTime
 
 @Service
 class UserService(
@@ -13,8 +14,15 @@ class UserService(
 ) {
   
   @Throws(DuplicateException::class)
-  suspend fun createUser(data: UserCreate): User {
-    return userRepository.save(User(0, data.email, data.password, "", UserRoles.Admin, Date().toString()))
+  suspend fun createUser(data: PostUserReqDTO): PostUserRespDTO {
+    return try {
+      val salt = BCrypt.gensalt(10)
+      val password = BCrypt.hashpw(data.password, salt)
+      val user = userRepository.save(User(0, data.email, password, salt, UserRoles.Admin, LocalDateTime.now()))
+      PostUserRespDTO(user.id, user.email, user.created_at)
+    } catch (e: DataIntegrityViolationException) {
+      throw DuplicateException(HttpStatus.CONFLICT, "already_in_use")
+    }
   }
   
   suspend fun findUser(): List<User> {

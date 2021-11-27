@@ -22,6 +22,10 @@ class DuplicateException(
   reason: String?
 ): GlobalException(status, reason)
 
+data class GlobalExceptionDTO(
+  val message: String
+)
+
 
 open class GlobalException : ResponseStatusException {
   constructor(status: HttpStatus?) : super(status!!) {}

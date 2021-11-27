@@ -64,12 +64,13 @@ class GlobalErrorHandler(
   private fun renderErrorResponse(
     request: ServerRequest
   ): Mono<ServerResponse> {
-    val errorPropertiesMap = getErrorAttributes(
-      request,
-      ErrorAttributeOptions.defaults()
-    )
-    return ServerResponse.status(HttpStatus.BAD_REQUEST)
-      .contentType(MediaType.APPLICATION_JSON)
-      .body(BodyInserters.fromValue(errorPropertiesMap))
+    val throwable = getError(request)
+    val result = mutableMapOf<String, Any>()
+    if (throwable is GlobalException) {
+      result["message"] = throwable.message
+      return ServerResponse.status(throwable.status).bodyValue(result)
+    }
+    result["message"] = "INTERNAL_SERVER_ERROR"
+    return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(result)
   }
 }

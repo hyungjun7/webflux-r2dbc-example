@@ -1,7 +1,6 @@
 package info.hyungjun.blogbackend.models.user
 
 import info.hyungjun.blogbackend.common.DuplicateException
-import kotlinx.coroutines.flow.toList
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
@@ -19,13 +18,16 @@ class UserService(
       val salt = BCrypt.gensalt(10)
       val password = BCrypt.hashpw(data.password, salt)
       val user = userRepository.save(User(0, data.email, password, salt, UserRoles.Admin, LocalDateTime.now()))
-      PostUserRespDTO(user.id, user.email, user.created_at)
+      PostUserRespDTO(user.id, user.email, user.created_at.toString())
     } catch (e: DataIntegrityViolationException) {
       throw DuplicateException(HttpStatus.CONFLICT, "already_in_use")
     }
   }
   
-  suspend fun findUser(): List<User> {
-    return userRepository.findAll().toList()
+  suspend fun findUser(): List<PostUserRespDTO> {
+    return userRepository.findUser()
+      .map {
+        PostUserRespDTO(it.id, it.email, it.created_at.toString())
+      }
   }
 }

@@ -1,5 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+val jjwt_version: String by project
+val openapi_version: String by project
+val r2dbc_mysql_version: String by project
+val dotenv_version: String by project
+val jbcrypt_version: String by project
+
 plugins {
   id("org.springframework.boot") version "2.6.0"
   id("io.spring.dependency-management") version "1.0.11.RELEASE"
@@ -18,18 +24,20 @@ repositories {
 dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
   implementation("org.springframework.boot:spring-boot-starter-webflux")
+  implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-  implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
-  implementation("de.svenkubiak:jBCrypt:0.4.1")
-  implementation("org.springdoc:springdoc-openapi-webflux-core:1.5.12")
-  implementation("org.springdoc:springdoc-openapi-webflux-ui:1.5.12")
-  implementation("org.springdoc:springdoc-openapi-kotlin:1.5.12")
+  implementation("io.github.cdimascio:dotenv-kotlin:$dotenv_version")
+  implementation("de.svenkubiak:jBCrypt:$jbcrypt_version")
+  implementation("org.springdoc:springdoc-openapi-webflux-core:$openapi_version")
+  implementation("org.springdoc:springdoc-openapi-webflux-ui:$openapi_version")
+  implementation("org.springdoc:springdoc-openapi-kotlin:$openapi_version")
+  implementation("io.jsonwebtoken:jjwt-api:$jjwt_version")
   developmentOnly("org.springframework.boot:spring-boot-devtools:true")
-  implementation("dev.miku:r2dbc-mysql")
+  implementation("dev.miku:r2dbc-mysql:$r2dbc_mysql_version")
   runtimeOnly("mysql:mysql-connector-java")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("io.projectreactor:reactor-test")

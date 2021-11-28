@@ -5,8 +5,13 @@ data class PostUserReqDTO(
   val password: String,
 )
 
-data class PostUserRespDTO(
+data class GetUserRespDTO(
   val id: Long,
   val email: String,
   val created_at: String
+)
+
+data class PostUserRespDTO(
+  val user: GetUserRespDTO,
+  val accessToken: String
 )

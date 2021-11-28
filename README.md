@@ -1,8 +1,8 @@
 # Spring Webflux Sample
 - Kotlin (Functional Endpoint With Coroutine)
 - Spring Boot
-- Spring Webflux (KotlinDSL)
-- Spring R2DBC (MySql)
+- Spring Webflux
+- Spring R2DBC (R2dbc-MySql)
 - Spring Security
 - OpenAPI 3.0 (springdoc)
 - JWT Authentication (jjwt)

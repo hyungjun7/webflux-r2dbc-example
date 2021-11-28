@@ -39,6 +39,8 @@ dependencies {
   developmentOnly("org.springframework.boot:spring-boot-devtools:true")
   implementation("dev.miku:r2dbc-mysql:$r2dbc_mysql_version")
   runtimeOnly("mysql:mysql-connector-java")
+  runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwt_version")
+  runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwt_version")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("io.projectreactor:reactor-test")
 }

@@ -2,6 +2,7 @@ package info.hyungjun.blogbackend.routes.user
 
 import info.hyungjun.blogbackend.models.user.PostUserReqDTO
 import info.hyungjun.blogbackend.models.user.UserService
+import kotlinx.coroutines.reactive.awaitFirst
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.*
@@ -17,6 +18,7 @@ class UserHandler(
   }
   
   suspend fun getUser(req: ServerRequest): ServerResponse {
-    return ServerResponse.ok().bodyValueAndAwait(userService.findUser())
+    val userId = req.principal().awaitFirst().name
+    return ServerResponse.ok().bodyValueAndAwait(userService.findUser(userId.toLong()))
   }
 }

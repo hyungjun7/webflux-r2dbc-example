@@ -5,10 +5,7 @@ import org.springframework.data.repository.kotlin.CoroutineCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository: CoroutineCrudRepository<User, Int> {
-  
-  @Query("SELECT id, email, created_at FROM User")
-  suspend fun findUser(): List<FindUser>
+interface UserRepository: CoroutineCrudRepository<User, Long> {
   
   @Query("SELECT * FROM User WHERE email = :email")
   suspend fun findUserByEmail(email: String): User?

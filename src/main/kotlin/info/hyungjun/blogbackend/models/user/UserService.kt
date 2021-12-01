@@ -1,6 +1,7 @@
 package info.hyungjun.blogbackend.models.user
 
 import info.hyungjun.blogbackend.common.DuplicateException
+import info.hyungjun.blogbackend.common.NotFoundException
 import info.hyungjun.blogbackend.modules.JwtModule
 import org.mindrot.jbcrypt.BCrypt
 import org.springframework.dao.DataIntegrityViolationException
@@ -29,10 +30,9 @@ class UserService(
     }
   }
   
-  suspend fun findUser(): List<GetUserRespDTO> {
-    return userRepository.findUser()
-      .map {
-        GetUserRespDTO(it.id, it.email, it.created_at.toString())
-      }
+  @Throws(NotFoundException::class)
+  suspend fun findUser(id: Long): GetUserRespDTO {
+    val user = userRepository.findById(id) ?: throw NotFoundException()
+    return GetUserRespDTO(user.id, user.email, user.created_at.toString())
   }
 }

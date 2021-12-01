@@ -22,6 +22,9 @@ class DuplicateException(
   reason: String?
 ): GlobalException(status, reason)
 
+class WrongPasswordException: GlobalException(HttpStatus.CONFLICT, "wrong_password")
+class NotFoundException: GlobalException(HttpStatus.NOT_FOUND, "not_found")
+
 data class GlobalExceptionDTO(
   val message: String
 )

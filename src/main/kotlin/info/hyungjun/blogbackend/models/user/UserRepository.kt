@@ -9,4 +9,7 @@ interface UserRepository: CoroutineCrudRepository<User, Int> {
   
   @Query("SELECT id, email, created_at FROM User")
   suspend fun findUser(): List<FindUser>
+  
+  @Query("SELECT * FROM User WHERE email = :email")
+  suspend fun findUserByEmail(email: String): User?
 }

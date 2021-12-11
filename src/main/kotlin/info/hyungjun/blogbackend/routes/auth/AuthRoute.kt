@@ -1,6 +1,5 @@
 package info.hyungjun.blogbackend.routes.auth
-import info.hyungjun.blogbackend.common.NotFoundException
-import info.hyungjun.blogbackend.common.WrongPasswordException
+import info.hyungjun.blogbackend.common.GlobalExceptionDTO
 import info.hyungjun.blogbackend.models.auth.PostAuthReqDTO
 import info.hyungjun.blogbackend.models.user.PostUserRespDTO
 import io.swagger.v3.oas.annotations.Operation
@@ -47,12 +46,12 @@ class AuthRoutes {
           ApiResponse(
             responseCode = "404",
             description = "cannot find email",
-            content = [Content(schema = Schema(implementation = NotFoundException::class))]
+            content = [Content(schema = Schema(implementation = GlobalExceptionDTO::class))]
           ),
           ApiResponse(
             responseCode = "409",
             description = "wrong password",
-            content = [Content(schema = Schema(implementation = WrongPasswordException::class))]
+            content = [Content(schema = Schema(implementation = GlobalExceptionDTO::class))]
           )
         ]
       )

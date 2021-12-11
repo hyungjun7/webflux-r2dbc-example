@@ -11,7 +11,7 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
 
 @Component
 class AuthHandler(
-  val authService: AuthService
+  private val authService: AuthService
 ) {
   suspend fun postAuth(req: ServerRequest): ServerResponse {
     val data = req.awaitBody<PostAuthReqDTO>()

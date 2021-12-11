@@ -13,9 +13,9 @@ class JwtAuthenticationConverter: ServerAuthenticationConverter {
     return Mono.justOrEmpty(exchange)
       .flatMap { Mono.justOrEmpty(it.request.headers["authorization"]) }
       .filter { it.isNotEmpty() }
-      .map {
+      .flatMap {
         val token = ((it as List<*>)[0] as String).replace("Bearer ", "")
-        UsernamePasswordAuthenticationToken(token, token)
+        Mono.just(UsernamePasswordAuthenticationToken(token, token))
       }
   }
 }

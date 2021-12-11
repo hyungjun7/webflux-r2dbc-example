@@ -30,8 +30,7 @@ class SecurityConfig {
       .formLogin()
         .disable()
       .httpBasic()
-      .authenticationEntryPoint(HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED))
-      .authenticationManager(authenticationManager)
+        .disable()
       
       http
       .authorizeExchange()

@@ -16,14 +16,14 @@ class JwtAuthenticationManager(
 ): ReactiveAuthenticationManager {
   override fun authenticate(authentication: Authentication): Mono<Authentication> {
     return Mono.just(authentication)
-      .map { jwt.validateJwt(it.credentials as String) }
+      .flatMap { Mono.justOrEmpty(jwt.validateJwt(it.credentials as String)) }
       .onErrorResume { throw GlobalException(HttpStatus.UNAUTHORIZED, "invalid_token") }
-      .map { jws ->
-        UsernamePasswordAuthenticationToken(
-          jws.body.subject,
+      .flatMap {
+        Mono.just(UsernamePasswordAuthenticationToken(
+          it.body.subject,
           authentication.credentials as String,
           mutableListOf(SimpleGrantedAuthority("ROLE_USER"))
-        )
+        ))
       }
   }
 }

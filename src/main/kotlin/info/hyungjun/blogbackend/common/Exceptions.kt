@@ -1,5 +1,6 @@
 package info.hyungjun.blogbackend.common
 
+import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.web.WebProperties
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler
 import org.springframework.boot.web.error.ErrorAttributeOptions
@@ -58,6 +59,9 @@ class GlobalErrorHandler(
   applicationContext: ApplicationContext?,
   configure: ServerCodecConfigurer
 ) : AbstractErrorWebExceptionHandler(errorAttributes, resources.resources, applicationContext) {
+  
+  private val logger = LoggerFactory.getLogger(GlobalErrorHandler::class.java)
+  
   init {
     super.setMessageWriters(configure.writers)
     super.setMessageReaders(configure.readers)
@@ -75,8 +79,22 @@ class GlobalErrorHandler(
     val result = mutableMapOf<String, Any>()
     if (throwable is GlobalException) {
       result["message"] = throwable.message
+      logger.error(
+        "RESP [{}]: {} {} {}",
+        request.exchange().request.id,
+        throwable.status,
+        throwable.message,
+        throwable.stackTraceToString()
+      )
       return ServerResponse.status(throwable.status).bodyValue(result)
     }
+    logger.error(
+      "RESP [{}]: {} {} {}",
+      request.exchange().request.id,
+      500,
+      throwable.message,
+      throwable.stackTraceToString()
+    )
     result["message"] = "INTERNAL_SERVER_ERROR"
     return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).bodyValue(result)
   }

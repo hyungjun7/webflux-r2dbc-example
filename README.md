@@ -6,6 +6,8 @@
 - Spring Security
 - OpenAPI 3.0 (springdoc)
 - JWT Authentication (jjwt)
+- Logging (slf4j)
+- Tests (JUnit, WebTestClient)
 
 ### Getting Started
 1. set .env in resources</br>

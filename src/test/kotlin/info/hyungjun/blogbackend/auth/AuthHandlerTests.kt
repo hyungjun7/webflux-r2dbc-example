@@ -2,21 +2,29 @@ package info.hyungjun.blogbackend.auth
 
 import info.hyungjun.blogbackend.models.auth.PostAuthReqDTO
 import info.hyungjun.blogbackend.models.user.PostUserRespDTO
-import org.junit.jupiter.api.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
 import org.springframework.test.web.reactive.server.WebTestClient
 
-class AuthHandlerTests {
-  private val client: WebTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build()
+class AuthHandlerTests(
+  private val client: WebTestClient
+) {
   
-  @Test
-  fun loginTest() {
-    client.post()
+  private val logger = LoggerFactory.getLogger(AuthHandlerTests::class.java)
+  
+  fun loginTest(): String {
+    val userInfo = PostAuthReqDTO("string", "string")
+    println("loginTest: $userInfo")
+    return client.post()
       .uri("/api/blog/auth")
       .header(CONTENT_TYPE, "application/json")
-      .bodyValue(PostAuthReqDTO("string", "string"))
+      .bodyValue(userInfo)
       .exchange()
-      .expectStatus().is2xxSuccessful
+      .expectStatus().isOk
       .expectBody(PostUserRespDTO::class.java)
+      .returnResult()
+      .responseBody
+      ?.accessToken ?: ""
   }
 }

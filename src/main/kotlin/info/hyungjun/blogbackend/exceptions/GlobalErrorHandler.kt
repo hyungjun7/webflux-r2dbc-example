@@ -1,4 +1,4 @@
-package info.hyungjun.blogbackend.common
+package info.hyungjun.blogbackend.exceptions
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.web.WebProperties
@@ -9,32 +9,10 @@ import org.springframework.boot.web.reactive.error.ErrorAttributes
 import org.springframework.context.ApplicationContext
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.codec.ServerCodecConfigurer
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.*
-import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
-
-
-class DuplicateException(
-  status: HttpStatus?,
-  reason: String?
-): GlobalException(status, reason)
-
-class WrongPasswordException: GlobalException(HttpStatus.CONFLICT, "wrong_password")
-class NotFoundException: GlobalException(HttpStatus.NOT_FOUND, "not_found")
-
-data class GlobalExceptionDTO(
-  val message: String
-)
-
-
-open class GlobalException : ResponseStatusException {
-  constructor(status: HttpStatus?) : super(status!!) {}
-  constructor(status: HttpStatus?, reason: String?) : super(status!!, reason) {}
-}
 
 @Component
 class GlobalErrorAttributes : DefaultErrorAttributes() {

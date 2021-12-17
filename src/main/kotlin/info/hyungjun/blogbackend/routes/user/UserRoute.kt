@@ -1,5 +1,6 @@
 package info.hyungjun.blogbackend.routes.user
-import info.hyungjun.blogbackend.common.GlobalExceptionDTO
+
+import info.hyungjun.blogbackend.common.GlobalExceptionDto
 import info.hyungjun.blogbackend.models.user.PostUserReqDTO
 import info.hyungjun.blogbackend.models.user.PostUserRespDTO
 import io.swagger.v3.oas.annotations.Operation
@@ -47,7 +48,7 @@ class UserRoutes {
           ApiResponse(
             responseCode = "409",
             description = "사용중인 이메일",
-            content = [Content(schema = Schema(implementation = GlobalExceptionDTO::class))]
+            content = [Content(schema = Schema(implementation = GlobalExceptionDto::class))]
           )
         ]
       )

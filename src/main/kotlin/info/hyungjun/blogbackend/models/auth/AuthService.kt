@@ -1,7 +1,8 @@
 package info.hyungjun.blogbackend.models.auth
 
-import info.hyungjun.blogbackend.common.NotFoundException
-import info.hyungjun.blogbackend.common.WrongPasswordException
+import info.hyungjun.blogbackend.exceptions.NotFoundException
+import info.hyungjun.blogbackend.exceptions.WrongPasswordException
+import info.hyungjun.blogbackend.models.user.FindUserDao
 import info.hyungjun.blogbackend.models.user.GetUserRespDTO
 import info.hyungjun.blogbackend.models.user.PostUserRespDTO
 import info.hyungjun.blogbackend.models.user.UserRepository
@@ -19,7 +20,7 @@ class AuthService(
     WrongPasswordException::class
   )
   suspend fun postAuth(data: PostAuthReqDTO): PostUserRespDTO {
-    val user = userRepository.findUserByEmail(data.email) ?: throw NotFoundException()
+    val user = userRepository.findOne(FindUserDao(data.email, null)) ?: throw NotFoundException()
     if (BCrypt.checkpw(data.password, user.password)) {
       return PostUserRespDTO(
         user = GetUserRespDTO(user.id, user.email, user.created_at.toString()),

@@ -11,8 +11,6 @@ class AuthHandlerTests(
   private val client: WebTestClient
 ) {
   
-  private val logger = LoggerFactory.getLogger(AuthHandlerTests::class.java)
-  
   fun loginTest(): String {
     val userInfo = PostAuthReqDTO("string", "string")
     println("loginTest: $userInfo")

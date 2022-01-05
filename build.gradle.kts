@@ -9,8 +9,22 @@ val jbcrypt_version: String by project
 plugins {
   id("org.springframework.boot") version "2.6.0"
   id("io.spring.dependency-management") version "1.0.11.RELEASE"
+  kotlin("plugin.noarg") version "1.6.10"
+  kotlin("plugin.jpa") version "1.6.10"
   kotlin("jvm") version "1.6.0"
   kotlin("plugin.spring") version "1.6.0"
+}
+
+allOpen {
+  annotation("javax.persistence.Entity")
+  annotation("javax.persistence.MappedSuperclass")
+  annotation("javax.persistence.Embeddable")
+}
+
+noArg {
+  annotation("javax.persistence.Entity")
+  annotation("javax.persistence.MappedSuperclass")
+  annotation("javax.persistence.Embeddable")
 }
 
 group = "info.hyungjun"
@@ -36,7 +50,6 @@ dependencies {
   implementation("org.springdoc:springdoc-openapi-webflux-ui:$openapi_version")
   implementation("org.springdoc:springdoc-openapi-kotlin:$openapi_version")
   implementation("io.jsonwebtoken:jjwt-api:$jjwt_version")
-  developmentOnly("org.springframework.boot:spring-boot-devtools:true")
   implementation("dev.miku:r2dbc-mysql:$r2dbc_mysql_version")
   runtimeOnly("mysql:mysql-connector-java")
   runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwt_version")

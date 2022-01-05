@@ -1,6 +1,6 @@
 package info.hyungjun.blogbackend.config
 
-import info.hyungjun.blogbackend.common.GlobalException
+import info.hyungjun.blogbackend.exceptions.GlobalException
 import info.hyungjun.blogbackend.modules.JwtModule
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.ReactiveAuthenticationManager

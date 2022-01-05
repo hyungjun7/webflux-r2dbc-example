@@ -34,6 +34,8 @@ class SecurityConfig {
       
       http
       .authorizeExchange()
+        .pathMatchers(HttpMethod.POST, "/post")
+          .authenticated()
         .pathMatchers(HttpMethod.GET, "/user")
           .authenticated()
         .pathMatchers("/**")

@@ -1,38 +1,40 @@
 package info.hyungjun.blogbackend.models.user
 
 import info.hyungjun.blogbackend.exceptions.MethodNoArgumentException
-import info.hyungjun.blogbackend.modules.db.DBConnection
+import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
+import org.springframework.data.relational.core.query.Criteria
+import org.springframework.data.relational.core.query.Query
+import org.springframework.data.relational.core.query.isEqual
+import org.springframework.r2dbc.core.DatabaseClient
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Mono
+import java.time.LocalDateTime
 
 @Repository
-class UserRepository {
+class UserRepository(
+  private val entityTemplate: R2dbcEntityTemplate
+) {
+  val tableName = "User"
   
-  suspend fun post(data: CreateUserDao): MutableMap<String, Any> {
-    return DBConnection.getInstance().insert(
-      q = "INSERT INTO $TABLE_NAME (??) VALUES (?)",
-      value = data,
-      connection = null
+  fun insert(data: User): Mono<User> {
+    return entityTemplate.insert(data)
+  }
+  
+  fun findByEmail(email: String): Mono<User> {
+    return entityTemplate.selectOne(
+      Query.query(
+        Criteria.where("email").isEqual(email)
+      ),
+      User::class.java
     )
   }
   
-  suspend fun findOne(data: FindUserDao): UserDao? {
-    val where = mutableListOf<String>()
-    if (data.email != null) {
-      where.add("email = '${data.email}'")
-    } else if (data.id !== null) {
-      where.add("id = ${data.id}")
-    } else {
-      throw MethodNoArgumentException()
-    }
-    val row = DBConnection.getInstance().selectOne(
-      q = "SELECT * FROM $TABLE_NAME ${if (where.size > 0) "WHERE ${where.joinToString()}" else ""}",
-      values = listOf(),
-      connection = null
+  fun findById(id: Long): Mono<User> {
+    return entityTemplate.selectOne(
+      Query.query(
+        Criteria.where("id").isEqual(id)
+      ),
+      User::class.java
     )
-    return UserDao(row)
-  }
-  
-  companion object {
-    const val TABLE_NAME = "User"
   }
 }
